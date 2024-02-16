@@ -1,3 +1,7 @@
+#wrapper {
+    border: 5px solid black;
+}
+
 canvas {
-    background: url('./assets/D');
+    background: url('./assets/desert-top-down/images/Tile_5.png');
 }
