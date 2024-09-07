@@ -13,6 +13,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     overflow: hidden;
+    background: url('./assets/desert-top-down/images/Tile_5.png');
 }
 
 canvas {
