@@ -21,6 +21,7 @@ canvas {
     top: 48%;
     left: 50%;
     transform: translate(-50%, -50%);
+    /* following properties bottom are for to see the canvas range */
     border: 2px solid red;
     z-index: 1;
 }
@@ -38,3 +39,11 @@ canvas {
     overflow: hidden; /* Hide any part of the image that overflows */
 }
 
+/* objects */
+#skull {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    scale: 0.5;
+    z-index: 1;
+}
