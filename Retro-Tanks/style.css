@@ -7,14 +7,33 @@
 #wrapper {
     border: 5px solid black;
     width: 1000px;
-    height: 500px;
-    overflow: hidden;
+    height: 550px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow: hidden;
 }
 
 canvas {
-    background: url('./assets/desert-top-down/images/Tile_5.png');
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid red;
+    z-index: 1;
 }
+
+#map {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(4, 256px); /* 4 columns, each 256px wide */
+    grid-template-rows: repeat(3, 256px);    /* 2 rows, each 256px tall */
+    /* width: 1024px; Set the width to accommodate the 4 columns */
+    /* height: 512px; Set the height to accommodate the 2 rows */
+    overflow: hidden; /* Hide any part of the image that overflows */
+}
+
