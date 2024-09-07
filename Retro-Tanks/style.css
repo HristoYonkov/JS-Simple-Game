@@ -32,11 +32,9 @@ canvas {
     left: 50%;
     transform: translate(-50%, -50%);
     display: grid;
-    grid-template-columns: repeat(4, 256px); /* 4 columns, each 256px wide */
-    grid-template-rows: repeat(3, 256px);    /* 2 rows, each 256px tall */
-    /* width: 1024px; Set the width to accommodate the 4 columns */
-    /* height: 512px; Set the height to accommodate the 2 rows */
-    overflow: hidden; /* Hide any part of the image that overflows */
+    grid-template-columns: repeat(4, 256px);
+    grid-template-rows: repeat(3, 256px);
+    overflow: hidden;
 }
 
 /* objects */
