@@ -1,4 +1,4 @@
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     const canvas = document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
     canvas.width = 750;
@@ -26,16 +26,23 @@ window.addEventListener('load', function() {
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 3;
+            this.hullImage = document.getElementById('hull');
+            this.weaponImage = document.getElementById('weapon');
+            this.weaponRotation = 0;  // Rotation angle of the weapon
         }
         draw(context) {
-            context.fillRect(this.x, this.y, this.width, this.height);
+            // Draw the player Tank
+            context.drawImage(this.hullImage, this.x, this.y, this.width, this.height);
+            context.drawImage(this.weaponImage, this.x + 30, this.y, this.width - 60, this.height - 20);
         }
+
         setSpeed(speedX, speedY) {
             this.speedX = speedX;
             this.speedY = speedY;
         }
+
+        // player movement
         update() {
-            // player movement
             if (this.game.lastKey == 'PArrowLeft') {
                 this.setSpeed(- this.maxSpeed, 0);
             } else if (this.game.lastKey == 'PArrowRight') {
@@ -84,7 +91,7 @@ window.addEventListener('load', function() {
     }
 
     const game = new Game(canvas.width, canvas.height);
-    
+
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.render(ctx);
