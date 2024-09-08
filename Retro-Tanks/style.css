@@ -45,3 +45,29 @@ canvas {
     scale: 0.5;
     z-index: 1;
 }
+
+#player {
+    position: relative;
+    width: 256px;
+    height: 256px;
+    /* background-color: aliceblue; */
+    transform-origin: center center;
+    /* transform: rotate(90deg); */
+    scale: 0.4;
+}
+
+#hull {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+#weapon {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 80%;
+    z-index: 1;
+}
