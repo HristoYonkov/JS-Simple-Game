@@ -46,6 +46,7 @@ canvas {
     z-index: 1;
 }
 
+/* player Tank styling start */
 #player {
     position: relative;
     width: 256px;
@@ -54,6 +55,7 @@ canvas {
     transform-origin: center center;
     /* transform: rotate(90deg); */
     scale: 0.4;
+    display: none;
 }
 
 #hull {
@@ -71,3 +73,4 @@ canvas {
     height: 80%;
     z-index: 1;
 }
+/* player Tank styling end */
