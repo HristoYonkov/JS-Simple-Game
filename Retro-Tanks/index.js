@@ -57,7 +57,6 @@ window.addEventListener('load', function() {
             } else if (this.x > this.game.width - this.width) {
                 this.x = this.game.width - this.width
             }
-            
             if (this.y < 0) {
                 this.y = 0;
             } else if (this.y > this.game.height - this.height) {
