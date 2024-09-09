@@ -107,18 +107,20 @@ window.addEventListener('load', function () {
             this.input = new InputHandler(this);
             this.player = new Player(this)
         }
-        render(context) {
+        render(context, deltaTime) {
             this.player.draw(context);
             this.player.update();
         }
     }
 
     const game = new Game(canvas.width, canvas.height);
-
-    function animate() {
+    let lastTime = 0;
+    function animate(timeStamp) {
+        const deltaTime = timeStamp - lastTime;
+        lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.render(ctx);
+        game.render(ctx, deltaTime);
         requestAnimationFrame(animate);
     }
-    animate();
+    animate(0);
 });
