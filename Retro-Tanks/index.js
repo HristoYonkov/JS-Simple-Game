@@ -28,12 +28,21 @@ window.addEventListener('load', function () {
             this.maxSpeed = 3;
             this.hullImage = document.getElementById('hull');
             this.weaponImage = document.getElementById('weapon');
-            this.weaponRotation = 0;  // Rotation angle of the weapon
+            this.rotateTankAngle = 0;  // Rotation angle of tank
         }
         draw(context) {
             // Draw the player Tank
-            context.drawImage(this.hullImage, this.x, this.y, this.width, this.height);
-            context.drawImage(this.weaponImage, this.x + 30, this.y, this.width - 60, this.height - 20);
+            // Save the current canvas state
+            context.save();
+            // Translate to the center of the tank before rotating
+            context.translate(this.x + this.width / 2, this.y + this.height / 2);
+            // Apply the rotation
+            context.rotate(this.rotateTankAngle);
+            // Draw the hull and weapon, adjusting positions to account for rotation
+            context.drawImage(this.hullImage, -this.width / 2, -this.height / 2, this.width, this.height);
+            context.drawImage(this.weaponImage, -this.width / 2 + 32, -this.height / 2, this.width - 64, this.height - 20);
+
+            context.restore()
         }
 
         setSpeed(speedX, speedY) {
@@ -44,14 +53,28 @@ window.addEventListener('load', function () {
         // player movement
         update() {
             if (this.game.lastKey == 'PArrowLeft') {
+                this.rotateTankAngle = 3 * Math.PI / 2;
                 this.setSpeed(- this.maxSpeed, 0);
+            } else if (this.game.lastKey == 'RArrowLeft' && this.speedX < 0) {
+                this.rotateTankAngle = 3 * Math.PI / 2;
+                this.setSpeed(0, 0);
             } else if (this.game.lastKey == 'PArrowRight') {
+                this.rotateTankAngle = Math.PI / 2;
                 this.setSpeed(this.maxSpeed, 0);
+            } else if (this.game.lastKey == 'RArrowRight' && this.speedX > 0) {
+                this.rotateTankAngle = Math.PI / 2;
+                this.setSpeed(0, 0);
             } else if (this.game.lastKey == 'PArrowUp') {
+                this.rotateTankAngle = 0;
                 this.setSpeed(0, - this.maxSpeed);
+            } else if (this.game.lastKey == 'RArrowUp' && this.speedY < 0) {
+                this.rotateTankAngle = 0;
+                this.setSpeed(0, 0);
             } else if (this.game.lastKey == 'PArrowDown') {
+                this.rotateTankAngle = Math.PI;
                 this.setSpeed(0, this.maxSpeed);
-            } else {
+            } else if (this.game.lastKey == 'RArrowDown' && this.speedY > 0) {
+                this.rotateTankAngle = Math.PI;
                 this.setSpeed(0, 0);
             }
 
