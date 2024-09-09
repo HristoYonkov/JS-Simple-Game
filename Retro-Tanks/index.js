@@ -26,10 +26,17 @@ window.addEventListener('load', function () {
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 3;
+            this.trackA = document.getElementById('track-1-A');
+            this.trackB = document.getElementById('track-1-B');
             this.hullImage = document.getElementById('hull');
             this.weaponImage = document.getElementById('weapon');
-            this.rotateTankAngle = 0;  // Rotation angle of tank
+            this.rotateTankAngle = 0;
+            this.rotateWeaponAngle = 0;
+            this.currentTracks = this.trackA;
+            this.frameCount = 0;
+            this.trackSwapInterval = 2;
         }
+
         draw(context) {
             // Draw the player Tank
             // Save the current canvas state
@@ -38,11 +45,22 @@ window.addEventListener('load', function () {
             context.translate(this.x + this.width / 2, this.y + this.height / 2);
             // Apply the rotation
             context.rotate(this.rotateTankAngle);
-            // Draw the hull and weapon, adjusting positions to account for rotation
+            // Draw the hull, tracks and weapon, adjusting positions to account for rotation
+            context.drawImage(this.currentTracks, - 36, - 50, 23, 103);
+            context.drawImage(this.currentTracks, 13, - 50, 23, 103);
             context.drawImage(this.hullImage, -this.width / 2, -this.height / 2, this.width, this.height);
             context.drawImage(this.weaponImage, -this.width / 2 + 32, -this.height / 2, this.width - 64, this.height - 20);
+            context.restore();
+        }
 
-            context.restore()
+        updateTracks() {
+            this.frameCount++;
+            if (this.frameCount % this.trackSwapInterval === 0) {
+                // Swap tracks
+                this.currentTracks === this.trackA
+                    ? this.currentTracks = this.trackB
+                    : this.currentTracks = this.trackA
+            }
         }
 
         setSpeed(speedX, speedY) {
@@ -52,6 +70,14 @@ window.addEventListener('load', function () {
 
         // player movement
         update() {
+            if (this.game.lastKey === 'PArrowLeft' ||
+                this.game.lastKey === 'PArrowRight' ||
+                this.game.lastKey === 'PArrowUp' ||
+                this.game.lastKey === 'PArrowDown'
+            ) {
+                this.updateTracks();
+            }
+
             if (this.game.lastKey == 'PArrowLeft') {
                 this.rotateTankAngle = 3 * Math.PI / 2;
                 this.setSpeed(- this.maxSpeed, 0);
