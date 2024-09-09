@@ -34,7 +34,7 @@ window.addEventListener('load', function () {
             this.rotateWeaponAngle = 0;
             this.currentTracks = this.trackA;
             this.frameCount = 0;
-            this.trackSwapInterval = 2;
+            this.trackSwapInterval = 10;
         }
 
         draw(context) {
@@ -70,11 +70,8 @@ window.addEventListener('load', function () {
 
         // player movement
         update() {
-            if (this.game.lastKey === 'PArrowLeft' ||
-                this.game.lastKey === 'PArrowRight' ||
-                this.game.lastKey === 'PArrowUp' ||
-                this.game.lastKey === 'PArrowDown'
-            ) {
+            if (this.game.lastKey === 'PArrowLeft' || this.game.lastKey === 'PArrowRight' ||
+                this.game.lastKey === 'PArrowUp' || this.game.lastKey === 'PArrowDown') {
                 this.updateTracks();
             }
 
