@@ -34,7 +34,7 @@ window.addEventListener('load', function () {
             this.rotateWeaponAngle = 0;
             this.currentTracks = this.trackA;
             this.frameCount = 0;
-            this.trackSwapInterval = 20;
+            this.trackSwapInterval = 2;
         }
 
         draw(context) {
