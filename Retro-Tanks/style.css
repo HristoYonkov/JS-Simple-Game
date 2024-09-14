@@ -52,11 +52,13 @@ canvas {
 #weapon {
     display: none;
 }
-
 #track-1-A {
     display: none;
 }
 #track-1-B {
+    display: none;
+}
+#Light_Shell {
     display: none;
 }
 
