@@ -8,8 +8,6 @@ window.addEventListener('load', function () {
         constructor(game) {
             this.game = game
             window.addEventListener('keydown', (e) => {
-                console.log(e.key);
-                
                 this.game.lastKey = 'P' + e.key;
             });
             window.addEventListener('keyup', (e) => {
@@ -25,8 +23,6 @@ window.addEventListener('load', function () {
             this.height = 100;
             this.x = 200;
             this.y = 200;
-            this.shootX = - 40;
-            this.shootY = - 80;
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 3;
@@ -34,7 +30,6 @@ window.addEventListener('load', function () {
             this.trackB = document.getElementById('track-1-B');
             this.hullImage = document.getElementById('hull');
             this.weaponImage = document.getElementById('weapon');
-            this.lightShell = document.getElementById('Light_Shell')
             this.rotateTankAngle = 0;
             this.rotateWeaponAngle = 0;
             this.currentTracks = this.trackA;
@@ -55,7 +50,7 @@ window.addEventListener('load', function () {
             context.drawImage(this.currentTracks, 13, - 50, 23, 103);
             context.drawImage(this.hullImage, -this.width / 2, -this.height / 2, this.width, this.height);
             context.drawImage(this.weaponImage, -this.width / 2 + 32, -this.height / 2, this.width - 64, this.height - 20);
-            context.drawImage(this.lightShell, this.shootX , this.shootY , 80, 80)
+            
             context.restore();
         }
 
@@ -120,10 +115,12 @@ window.addEventListener('load', function () {
             } else if (this.y > this.game.height - this.height) {
                 this.y = this.game.height - this.height;
             }
+        }
+    }
 
-            if (this.game.lastKey === 'Pf') {
-                this.shootY -= 5
-            }
+    class LightShell {
+        constructor() {
+
         }
     }
 
@@ -137,7 +134,7 @@ window.addEventListener('load', function () {
             this.height = height;
             this.lastKey = undefined;
             this.input = new InputHandler(this);
-            this.player = new Player(this)
+            this.player = new Player(this);
         }
         render(context, deltaTime) {
             this.player.draw(context);
@@ -156,3 +153,11 @@ window.addEventListener('load', function () {
     }
     animate(0);
 });
+
+
+this.shootX = - 40;
+this.shootY = - 80;
+context.drawImage(this.lightShell, this.shootX , this.shootY , 80, 80);
+if (this.game.lastKey === 'Pf') {
+    this.shootY -= 5
+}
