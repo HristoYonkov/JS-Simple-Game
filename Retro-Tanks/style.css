@@ -38,11 +38,8 @@ canvas {
 }
 
 /* objects */
-#skull {
-    position: absolute;
-    top: 30%;
-    left: 30%;
-    scale: 0.5;
+#skull, #tree, #cactus {
+    display: none;
 }
 
 /* player Tank */
