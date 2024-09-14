@@ -50,7 +50,7 @@ window.addEventListener('load', function () {
             context.drawImage(this.currentTracks, 13, - 50, 23, 103);
             context.drawImage(this.hullImage, -this.width / 2, -this.height / 2, this.width, this.height);
             context.drawImage(this.weaponImage, -this.width / 2 + 32, -this.height / 2, this.width - 64, this.height - 20);
-            
+
             context.restore();
         }
 
@@ -125,7 +125,46 @@ window.addEventListener('load', function () {
     }
 
     class Object {
+        constructor(game) {
+            this.game = game;
+        }
+        draw(context) {
+            context.drawImage(this.image, this.x, this.y, this.width, this.height);
+        } 
+    }
 
+    class Skull extends Object {
+        constructor(game) {
+            super(game);
+            this.game = game;
+            this.image = document.getElementById('skull');
+            this.width = 100;
+            this.height = 100;
+            this.x = Math.random() * (this.game.width - this.width);
+            this.y = Math.random() * (this.game.height - this.height);
+        }
+    }
+    class Tree extends Object {
+        constructor(game) {
+            super(game);
+            this.game = game;
+            this.image = document.getElementById('tree'); 
+            this.width = 100;
+            this.height = 100;
+            this.x = Math.random() * (this.game.width - this.width);
+            this.y = Math.random() * (this.game.height - this.height);
+        }
+    }
+    class Cactus extends Object {
+        constructor(game) {
+            super(game);
+            this.game = game;
+            this.image = document.getElementById('cactus');
+            this.width = 100;
+            this.height = 100;
+            this.x = Math.random() * (this.game.width - this.width);
+            this.y = Math.random() * (this.game.height - this.height);
+        }
     }
 
     class Game {
@@ -135,14 +174,26 @@ window.addEventListener('load', function () {
             this.lastKey = undefined;
             this.input = new InputHandler(this);
             this.player = new Player(this);
+            this.numberOfObjects = 10;
+            this.objects = [];
         }
         render(context, deltaTime) {
             this.player.draw(context);
             this.player.update();
+            this.objects.forEach(obj => obj.draw(context));
+        }
+        initObjects() {
+            for (let i = 0; i < this.numberOfObjects; i++) {
+                const randomPos = Math.random();
+                if (randomPos < 0.3) this.objects.push(new Skull(this))
+                    else if (randomPos < 0.6) this.objects.push(new Cactus(this))
+                else this.objects.push(new Tree(this))
+            }
         }
     }
 
     const game = new Game(canvas.width, canvas.height);
+    game.initObjects();
     let lastTime = 0;
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime;
@@ -154,7 +205,7 @@ window.addEventListener('load', function () {
     animate(0);
 });
 
-
+// use this code for the shell later
 this.shootX = - 40;
 this.shootY = - 80;
 context.drawImage(this.lightShell, this.shootX , this.shootY , 80, 80);
