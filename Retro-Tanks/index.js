@@ -8,6 +8,8 @@ window.addEventListener('load', function () {
         constructor(game) {
             this.game = game
             window.addEventListener('keydown', (e) => {
+                console.log(e.key);
+                
                 this.game.lastKey = 'P' + e.key;
             });
             window.addEventListener('keyup', (e) => {
@@ -23,6 +25,8 @@ window.addEventListener('load', function () {
             this.height = 100;
             this.x = 200;
             this.y = 200;
+            this.shootX = - 40;
+            this.shootY = - 80;
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 3;
@@ -30,6 +34,7 @@ window.addEventListener('load', function () {
             this.trackB = document.getElementById('track-1-B');
             this.hullImage = document.getElementById('hull');
             this.weaponImage = document.getElementById('weapon');
+            this.lightShell = document.getElementById('Light_Shell')
             this.rotateTankAngle = 0;
             this.rotateWeaponAngle = 0;
             this.currentTracks = this.trackA;
@@ -50,13 +55,13 @@ window.addEventListener('load', function () {
             context.drawImage(this.currentTracks, 13, - 50, 23, 103);
             context.drawImage(this.hullImage, -this.width / 2, -this.height / 2, this.width, this.height);
             context.drawImage(this.weaponImage, -this.width / 2 + 32, -this.height / 2, this.width - 64, this.height - 20);
+            context.drawImage(this.lightShell, this.shootX , this.shootY , 80, 80)
             context.restore();
         }
 
         updateTracks() {
             this.frameCount++;
             if (this.frameCount % this.trackSwapInterval === 0) {
-                // Swap tracks
                 this.currentTracks === this.trackA
                     ? this.currentTracks = this.trackB
                     : this.currentTracks = this.trackA
@@ -114,6 +119,10 @@ window.addEventListener('load', function () {
                 this.y = 0;
             } else if (this.y > this.game.height - this.height) {
                 this.y = this.game.height - this.height;
+            }
+
+            if (this.game.lastKey === 'Pf') {
+                this.shootY -= 5
             }
         }
     }
