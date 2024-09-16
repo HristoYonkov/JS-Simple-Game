@@ -9,9 +9,11 @@ window.addEventListener('load', function () {
             this.game = game
             window.addEventListener('keydown', (e) => {
                 this.game.lastKey = 'P' + e.key;
+                if (e.key == 'f') this.game.shoot = 'Pf';
             });
             window.addEventListener('keyup', (e) => {
                 this.game.lastKey = 'R' + e.key;
+                if (e.key == 'f') this.game.shoot = 'Rf';
             });
         }
     }
@@ -48,8 +50,8 @@ window.addEventListener('load', function () {
             // Draw the hull, tracks and weapon, adjusting positions to account for rotation
             context.drawImage(this.currentTracks, - 36, - 50, 23, 103);
             context.drawImage(this.currentTracks, 13, - 50, 23, 103);
-            context.drawImage(this.hullImage, -this.width / 2, -this.height / 2, this.width, this.height);
-            context.drawImage(this.weaponImage, -this.width / 2 + 32, -this.height / 2, this.width - 64, this.height - 20);
+            context.drawImage(this.hullImage, - this.width / 2, - this.height / 2, this.width, this.height);
+            context.drawImage(this.weaponImage, - this.width / 2 + 32, - this.height / 2, this.width - 64, this.height - 20);
 
             context.restore();
         }
@@ -115,12 +117,29 @@ window.addEventListener('load', function () {
             } else if (this.y > this.game.height - this.height) {
                 this.y = this.game.height - this.height;
             }
+
+            // player shooting
+            if (this.game.shoot == 'Pf') {
+                this.game.lightShells.push(new LightShell(this.game));
+            }
         }
     }
 
     class LightShell {
-        constructor() {
-
+        constructor(game) {
+            this.game = game;
+            this.image = document.getElementById('Light-Shell');
+            this.player = this.game.player;
+            this.x = this.player.x
+            this.y = this.player.y
+            this.speed = 7;
+            this.rotateAngle = this.game.player.rotateTankAngle;
+        }
+        draw(context) {
+            context.drawImage(this.image, this.x, this.y, 80, 80);
+        }
+        update() {
+            if (this.rotateAngle == 0) this.x += this.speed;
         }
     }
 
@@ -130,7 +149,7 @@ window.addEventListener('load', function () {
         }
         draw(context) {
             context.drawImage(this.image, this.x, this.y, this.width, this.height);
-        } 
+        }
     }
 
     class Skull extends Object {
@@ -148,7 +167,7 @@ window.addEventListener('load', function () {
         constructor(game) {
             super(game);
             this.game = game;
-            this.image = document.getElementById('tree'); 
+            this.image = document.getElementById('tree');
             this.width = 100;
             this.height = 100;
             this.x = Math.random() * (this.game.width - this.width);
@@ -172,20 +191,24 @@ window.addEventListener('load', function () {
             this.width = width;
             this.height = height;
             this.lastKey = undefined;
+            this.shoot = undefined;
             this.input = new InputHandler(this);
             this.player = new Player(this);
             this.numberOfObjects = 6;
             this.objects = [];
+            this.lightShells = [];
         }
         render(context, deltaTime) {
             this.player.draw(context);
             this.player.update();
+            this.lightShells.forEach(shell => shell.draw(context));
+            this.lightShells.forEach(shell => shell.update());
             this.objects.forEach(obj => obj.draw(context));
         }
         initObjects() {
             for (let i = 0; i < this.numberOfObjects; i++) {
                 if (i < this.numberOfObjects / 3) this.objects.push(new Skull(this))
-                    else if (i < this.numberOfObjects / 3 + this.numberOfObjects / 3) this.objects.push(new Cactus(this))
+                else if (i < this.numberOfObjects / 3 + this.numberOfObjects / 3) this.objects.push(new Cactus(this))
                 else this.objects.push(new Tree(this))
             }
         }
@@ -193,7 +216,9 @@ window.addEventListener('load', function () {
 
     const game = new Game(canvas.width, canvas.height);
     game.initObjects();
+
     let lastTime = 0;
+
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
@@ -205,9 +230,9 @@ window.addEventListener('load', function () {
 });
 
 // use this code for the shell later
-this.shootX = - 40;
-this.shootY = - 80;
-context.drawImage(this.lightShell, this.shootX , this.shootY , 80, 80);
-if (this.game.lastKey === 'Pf') {
-    this.shootY -= 5
-}
+// this.shootX = - 40;
+// this.shootY = - 80;
+// context.drawImage(this.lightShell, this.shootX, this.shootY, 80, 80);
+// if (this.game.lastKey === 'Pf') {
+//     this.shootY -= 5
+// }
