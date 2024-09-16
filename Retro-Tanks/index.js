@@ -183,7 +183,6 @@ window.addEventListener('load', function () {
             this.objects.forEach(obj => obj.draw(context));
         }
         initObjects() {
-            // This algorithm for adding equal random objects works only for even numbers.
             for (let i = 0; i < this.numberOfObjects; i++) {
                 if (i < this.numberOfObjects / 3) this.objects.push(new Skull(this))
                     else if (i < this.numberOfObjects / 3 + this.numberOfObjects / 3) this.objects.push(new Cactus(this))
