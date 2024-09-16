@@ -174,7 +174,7 @@ window.addEventListener('load', function () {
             this.lastKey = undefined;
             this.input = new InputHandler(this);
             this.player = new Player(this);
-            this.numberOfObjects = 10;
+            this.numberOfObjects = 6;
             this.objects = [];
         }
         render(context, deltaTime) {
@@ -183,10 +183,10 @@ window.addEventListener('load', function () {
             this.objects.forEach(obj => obj.draw(context));
         }
         initObjects() {
+            // This algorithm for adding equal random objects works only for even numbers.
             for (let i = 0; i < this.numberOfObjects; i++) {
-                const randomPos = Math.random();
-                if (randomPos < 0.3) this.objects.push(new Skull(this))
-                    else if (randomPos < 0.6) this.objects.push(new Cactus(this))
+                if (i < this.numberOfObjects / 3) this.objects.push(new Skull(this))
+                    else if (i < this.numberOfObjects / 3 + this.numberOfObjects / 3) this.objects.push(new Cactus(this))
                 else this.objects.push(new Tree(this))
             }
         }
