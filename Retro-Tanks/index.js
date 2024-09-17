@@ -137,7 +137,7 @@ window.addEventListener('load', function () {
         }
         draw(context) {
             context.save();
-            context.translate(this.x , this.y);
+            context.translate(this.x, this.y);
             context.rotate(this.rotateAngle);
             context.drawImage(this.image, -40, -80, 80, 80);
             context.restore();
@@ -145,14 +145,14 @@ window.addEventListener('load', function () {
         update() {
             if (this.rotateAngle == 0) {
                 this.y -= this.speed
-            } else if (this.rotateAngle == 3 * Math.PI / 2){
+            } else if (this.rotateAngle == 3 * Math.PI / 2) {
                 this.x -= this.speed;
             } else if (this.rotateAngle == Math.PI / 2) {
                 this.x += this.speed;
             } else {
                 this.y += this.speed;
             }
-                
+
         }
     }
 
