@@ -130,16 +130,29 @@ window.addEventListener('load', function () {
             this.game = game;
             this.image = document.getElementById('Light-Shell');
             this.player = this.game.player;
-            this.x = this.player.x
-            this.y = this.player.y
+            this.x = this.player.x + this.player.width / 2;
+            this.y = this.player.y + this.player.height / 2;
             this.speed = 7;
             this.rotateAngle = this.game.player.rotateTankAngle;
         }
         draw(context) {
-            context.drawImage(this.image, this.x, this.y, 80, 80);
+            context.save();
+            context.translate(this.x , this.y);
+            context.rotate(this.rotateAngle);
+            context.drawImage(this.image, -40, -80, 80, 80);
+            context.restore();
         }
         update() {
-            if (this.rotateAngle == 0) this.x += this.speed;
+            if (this.rotateAngle == 0) {
+                this.y -= this.speed
+            } else if (this.rotateAngle == 3 * Math.PI / 2){
+                this.x -= this.speed;
+            } else if (this.rotateAngle == Math.PI / 2) {
+                this.x += this.speed;
+            } else {
+                this.y += this.speed;
+            }
+                
         }
     }
 
@@ -228,11 +241,3 @@ window.addEventListener('load', function () {
     }
     animate(0);
 });
-
-// use this code for the shell later
-// this.shootX = - 40;
-// this.shootY = - 80;
-// context.drawImage(this.lightShell, this.shootX, this.shootY, 80, 80);
-// if (this.game.lastKey === 'Pf') {
-//     this.shootY -= 5
-// }
