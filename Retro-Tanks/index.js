@@ -133,26 +133,18 @@ window.addEventListener('load', function () {
             this.x = this.player.x + this.player.width / 2;
             this.y = this.player.y + this.player.height / 2;
             this.speed = 7;
-            this.rotateAngle = this.game.player.rotateTankAngle;
+            this.rotateAngle = this.game.player.rotateTankAngle - Math.PI / 2;
         }
         draw(context) {
             context.save();
             context.translate(this.x, this.y);
-            context.rotate(this.rotateAngle);
+            context.rotate(this.rotateAngle + Math.PI / 2);
             context.drawImage(this.image, -40, -80, 80, 80);
             context.restore();
         }
         update() {
-            if (this.rotateAngle == 0) {
-                this.y -= this.speed
-            } else if (this.rotateAngle == 3 * Math.PI / 2) {
-                this.x -= this.speed;
-            } else if (this.rotateAngle == Math.PI / 2) {
-                this.x += this.speed;
-            } else {
-                this.y += this.speed;
-            }
-
+            this.x += this.speed * Math.cos(this.rotateAngle);
+            this.y += this.speed * Math.sin(this.rotateAngle);
         }
     }
 
@@ -212,10 +204,10 @@ window.addEventListener('load', function () {
             this.lightShells = [];
         }
         render(context, deltaTime) {
-            this.player.draw(context);
-            this.player.update();
             this.lightShells.forEach(shell => shell.draw(context));
             this.lightShells.forEach(shell => shell.update());
+            this.player.draw(context);
+            this.player.update();
             this.objects.forEach(obj => obj.draw(context));
         }
         initObjects() {
