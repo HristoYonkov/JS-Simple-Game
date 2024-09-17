@@ -208,6 +208,11 @@ window.addEventListener('load', function () {
             this.layerObjects = [];
         }
         render(context, deltaTime) {
+            this.lightShells.forEach(shell => {
+                if (shell.x > this.width || shell.y > this.height) {
+                    this.lightShells.shift();
+                }
+            });
             this.lightShells.forEach(shell => shell.draw(context));
             this.lightShells.forEach(shell => shell.update());
 
@@ -244,7 +249,7 @@ window.addEventListener('load', function () {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.render(ctx, deltaTime);
-        
+
         requestAnimationFrame(animate);
     }
     animate(0);
