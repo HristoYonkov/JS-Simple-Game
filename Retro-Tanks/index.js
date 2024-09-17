@@ -155,6 +155,9 @@ window.addEventListener('load', function () {
         draw(context) {
             context.drawImage(this.image, this.x, this.y, this.width, this.height);
         }
+        update() {
+
+        }
     }
 
     class Skull extends Object {
@@ -202,13 +205,24 @@ window.addEventListener('load', function () {
             this.numberOfObjects = 6;
             this.objects = [];
             this.lightShells = [];
+            this.layerObjects = [];
         }
         render(context, deltaTime) {
             this.lightShells.forEach(shell => shell.draw(context));
             this.lightShells.forEach(shell => shell.update());
-            this.player.draw(context);
-            this.player.update();
-            this.objects.forEach(obj => obj.draw(context));
+
+            this.layerObjects = [this.player, ...this.objects];
+            this.layerObjects.sort((a, b) => {
+                return (a.y + a.height) - (b.y + b.height);
+            });
+            this.layerObjects.forEach(object => {
+                object.draw(context);
+                object.update();
+            });
+
+            // this.player.draw(context);
+            // this.player.update();
+            // this.objects.forEach(obj => obj.draw(context));
         }
         initObjects() {
             for (let i = 0; i < this.numberOfObjects; i++) {
@@ -227,8 +241,10 @@ window.addEventListener('load', function () {
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.render(ctx, deltaTime);
+        
         requestAnimationFrame(animate);
     }
     animate(0);
