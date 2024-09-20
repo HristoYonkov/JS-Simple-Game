@@ -37,9 +37,9 @@ window.addEventListener('load', function () {
             this.currentTracks = this.trackA;
             this.frameCount = 0;
             this.trackSwapInterval = 4;
-            this.fps = 3;
-            this.frameInterval = 1000 / this.fps;
-            this.frameCounter = 0;
+            this.shootFps = 3;
+            this.shootIntervalFrame = 1000 / this.shootFps;
+            this.shootCounterFrame = 0;
         }
 
         draw(context) {
@@ -75,11 +75,11 @@ window.addEventListener('load', function () {
 
         update(deltaTime) {
             // player shooting
-            this.frameCounter += deltaTime;
+            this.shootCounterFrame += deltaTime;
             if (this.game.shoot == 'Pf') {
-                if (this.frameCounter > this.frameInterval) {
+                if (this.shootCounterFrame > this.shootIntervalFrame) {
                     this.game.lightShells.push(new LightShell(this.game));
-                    this.frameCounter = 0;
+                    this.shootCounterFrame = 0;
                 }
             }
 
