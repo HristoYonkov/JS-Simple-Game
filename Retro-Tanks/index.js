@@ -36,7 +36,10 @@ window.addEventListener('load', function () {
             this.rotateWeaponAngle = 0;
             this.currentTracks = this.trackA;
             this.frameCount = 0;
-            this.trackSwapInterval = 2;
+            this.trackSwapInterval = 4;
+            this.fps = 3;
+            this.frameInterval = 1000 / this.fps;
+            this.frameCounter = 0;
         }
 
         draw(context) {
@@ -70,13 +73,23 @@ window.addEventListener('load', function () {
             this.speedY = speedY;
         }
 
-        // player movement
-        update() {
-            if (this.game.lastKey === 'PArrowLeft' || this.game.lastKey === 'PArrowRight' ||
-                this.game.lastKey === 'PArrowUp' || this.game.lastKey === 'PArrowDown') {
+        update(deltaTime) {
+            // player shooting
+            this.frameCounter += deltaTime;
+            if (this.game.shoot == 'Pf') {
+                if (this.frameCounter > this.frameInterval) {
+                    this.game.lightShells.push(new LightShell(this.game));
+                    this.frameCounter = 0;
+                }
+            }
+
+            // update tracks 
+            if (this.game.lastKey == 'PArrowLeft' || this.game.lastKey == 'PArrowRight' ||
+                this.game.lastKey == 'PArrowUp' || this.game.lastKey == 'PArrowDown') {
                 this.updateTracks();
             }
 
+            // player movement
             if (this.game.lastKey == 'PArrowLeft') {
                 this.rotateTankAngle = 3 * Math.PI / 2;
                 this.setSpeed(- this.maxSpeed, 0);
@@ -117,11 +130,6 @@ window.addEventListener('load', function () {
             } else if (this.y > this.game.height - this.height) {
                 this.y = this.game.height - this.height;
             }
-
-            // player shooting
-            if (this.game.shoot == 'Pf') {
-                this.game.lightShells.push(new LightShell(this.game));
-            }
         }
     }
 
@@ -132,7 +140,7 @@ window.addEventListener('load', function () {
             this.player = this.game.player;
             this.x = this.player.x + this.player.width / 2;
             this.y = this.player.y + this.player.height / 2;
-            this.speed = 7;
+            this.speed = 10;
             this.rotateAngle = this.game.player.rotateTankAngle - Math.PI / 2;
         }
         draw(context) {
@@ -222,7 +230,7 @@ window.addEventListener('load', function () {
             });
             this.layerObjects.forEach(object => {
                 object.draw(context);
-                object.update();
+                object.update(deltaTime);
             });
 
             // this.player.draw(context);
