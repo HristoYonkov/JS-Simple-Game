@@ -99,26 +99,16 @@ window.addEventListener('load', function () {
             if (this.moveDirection == 'PArrowLeft') {
                 this.rotateTankAngle = 3 * Math.PI / 2;
                 this.setSpeed(- this.maxSpeed, 0);
-            } else if (this.moveDirection == 'RArrowLeft' && this.speedX < 0) {
-                this.rotateTankAngle = 3 * Math.PI / 2;
-                this.setSpeed(0, 0);
             } else if (this.moveDirection == 'PArrowRight') {
                 this.rotateTankAngle = Math.PI / 2;
                 this.setSpeed(this.maxSpeed, 0);
-            } else if (this.moveDirection == 'RArrowRight' && this.speedX > 0) {
-                this.rotateTankAngle = Math.PI / 2;
-                this.setSpeed(0, 0);
             } else if (this.moveDirection == 'PArrowUp') {
                 this.rotateTankAngle = 0;
                 this.setSpeed(0, - this.maxSpeed);
-            } else if (this.moveDirection == 'RArrowUp' && this.speedY < 0) {
-                this.rotateTankAngle = 0;
-                this.setSpeed(0, 0);
             } else if (this.moveDirection == 'PArrowDown') {
                 this.rotateTankAngle = Math.PI;
                 this.setSpeed(0, this.maxSpeed);
-            } else if (this.moveDirection == 'RArrowDown' && this.speedY > 0) {
-                this.rotateTankAngle = Math.PI;
+            } else {
                 this.setSpeed(0, 0);
             }
 
