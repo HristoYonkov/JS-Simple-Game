@@ -6,14 +6,18 @@ window.addEventListener('load', function () {
 
     class InputHandler {
         constructor(game) {
-            this.game = game
+            this.game = game;
             window.addEventListener('keydown', (e) => {
-                this.game.lastKey = 'P' + e.key;
+                if (e.key == 'ArrowLeft' || e.key == 'ArrowRight' || e.key == 'ArrowUp' || e.key == 'ArrowDown') {
+                    if (this.game.lastKey.length < 4 && !this.game.lastKey.includes('P' + e.key)) {
+                        this.game.lastKey.push('P' + e.key);
+                    }
+                }
                 if (e.key == 'f') this.game.shoot = 'Pf';
             });
             window.addEventListener('keyup', (e) => {
-                this.game.lastKey = 'R' + e.key;
-                if (e.key == 'f') this.game.shoot = 'Rf';
+                if (e.key == 'ArrowLeft' || e.key == 'ArrowRight' || e.key == 'ArrowUp' || e.key == 'ArrowDown') this.game.lastKey.pop();
+                if (e.key == 'f') this.game.shoot = undefined;
             });
         }
     }
@@ -28,6 +32,7 @@ window.addEventListener('load', function () {
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 3;
+            this.moveDirection = '';
             this.trackA = document.getElementById('track-1-A');
             this.trackB = document.getElementById('track-1-B');
             this.hullImage = document.getElementById('hull');
@@ -88,30 +93,31 @@ window.addEventListener('load', function () {
                 this.game.lastKey == 'PArrowUp' || this.game.lastKey == 'PArrowDown') {
                 this.updateTracks();
             }
-
+            this.moveDirection = this.game.lastKey.length > 0 ? this.game.lastKey[this.game.lastKey.length - 1] : ''
+            console.log(this.game.lastKey);
             // player movement
-            if (this.game.lastKey == 'PArrowLeft') {
+            if (this.moveDirection == 'PArrowLeft') {
                 this.rotateTankAngle = 3 * Math.PI / 2;
                 this.setSpeed(- this.maxSpeed, 0);
-            } else if (this.game.lastKey == 'RArrowLeft' && this.speedX < 0) {
+            } else if (this.moveDirection == 'RArrowLeft' && this.speedX < 0) {
                 this.rotateTankAngle = 3 * Math.PI / 2;
                 this.setSpeed(0, 0);
-            } else if (this.game.lastKey == 'PArrowRight') {
+            } else if (this.moveDirection == 'PArrowRight') {
                 this.rotateTankAngle = Math.PI / 2;
                 this.setSpeed(this.maxSpeed, 0);
-            } else if (this.game.lastKey == 'RArrowRight' && this.speedX > 0) {
+            } else if (this.moveDirection == 'RArrowRight' && this.speedX > 0) {
                 this.rotateTankAngle = Math.PI / 2;
                 this.setSpeed(0, 0);
-            } else if (this.game.lastKey == 'PArrowUp') {
+            } else if (this.moveDirection == 'PArrowUp') {
                 this.rotateTankAngle = 0;
                 this.setSpeed(0, - this.maxSpeed);
-            } else if (this.game.lastKey == 'RArrowUp' && this.speedY < 0) {
+            } else if (this.moveDirection == 'RArrowUp' && this.speedY < 0) {
                 this.rotateTankAngle = 0;
                 this.setSpeed(0, 0);
-            } else if (this.game.lastKey == 'PArrowDown') {
+            } else if (this.moveDirection == 'PArrowDown') {
                 this.rotateTankAngle = Math.PI;
                 this.setSpeed(0, this.maxSpeed);
-            } else if (this.game.lastKey == 'RArrowDown' && this.speedY > 0) {
+            } else if (this.moveDirection == 'RArrowDown' && this.speedY > 0) {
                 this.rotateTankAngle = Math.PI;
                 this.setSpeed(0, 0);
             }
@@ -206,7 +212,7 @@ window.addEventListener('load', function () {
         constructor(width, height) {
             this.width = width;
             this.height = height;
-            this.lastKey = undefined;
+            this.lastKey = [];
             this.shoot = undefined;
             this.input = new InputHandler(this);
             this.player = new Player(this);
