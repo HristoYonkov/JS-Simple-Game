@@ -55,7 +55,14 @@ class Player {
         this.currentTracks = this.trackA;
         this.frameCount = 0;
         this.trackSwapInterval = 4;
-        this.shootFps = 3;
+
+        // control tracks FPS
+        this.tracksFps = 10;
+        this.tracksIntervalFrame = 1000 / this.tracksFps;
+        this.tracksCounterFrame = 0;
+
+        // control shoot FPS
+        this.shootFps = 1;
         this.shootIntervalFrame = 1000 / this.shootFps;
         this.shootCounterFrame = 0;
     }
@@ -78,11 +85,11 @@ class Player {
     }
 
     updateTracks() {
-        this.frameCount++;
-        if (this.frameCount % this.trackSwapInterval === 0) {
+        if (this.tracksCounterFrame > this.tracksIntervalFrame) {
             this.currentTracks === this.trackA
                 ? this.currentTracks = this.trackB
-                : this.currentTracks = this.trackA
+                : this.currentTracks = this.trackA;
+                this.tracksCounterFrame = 0;
         }
     }
 
@@ -93,18 +100,19 @@ class Player {
 
     update(deltaTime) {
         // player shooting
-        this.shootCounterFrame += deltaTime;
         if (this.game.shoot == 'f') {
             if (this.shootCounterFrame > this.shootIntervalFrame) {
                 this.game.lightShells.push(new LightShell(this.game));
                 this.shootCounterFrame = 0;
             }
         }
+        this.shootCounterFrame += deltaTime;
 
-        // update tracks 
+        // update tracks
         if (this.game.lastKey.length > 0) {
             this.updateTracks(deltaTime);
         }
+        this.tracksCounterFrame += deltaTime;
         
         // player movement
         this.moveDirection = this.game.lastKey.length > 0 ? this.game.lastKey[this.game.lastKey.length - 1] : '';
