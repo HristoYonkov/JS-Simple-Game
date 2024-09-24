@@ -65,11 +65,15 @@ class Player {
         this.shootFps = 1;
         this.shootIntervalFrame = 1000 / this.shootFps;
         this.shootCounterFrame = 0;
+
+        // control movement FPS
+        this.movementFps = 61;
+        this.movementIntervalFrame = 1000 / this.movementFps;
+        this.movementCounterFrame = 0;
     }
 
     draw(context) {
         // Draw the player Tank
-        // Save the current canvas state
         context.save();
         // Translate to the center of the tank before rotating
         context.translate(this.x + this.width / 2, this.y + this.height / 2);
@@ -131,9 +135,13 @@ class Player {
         } else {
             this.setSpeed(0, 0);
         }
+        if (this.movementCounterFrame > this.movementIntervalFrame) {
+            this.movementCounterFrame = 0;
+            this.x += this.speedX;
+            this.y += this.speedY;
+        }
+        this.movementCounterFrame += deltaTime;
 
-        this.x += this.speedX;
-        this.y += this.speedY;
 
         // player boundaries
         if (this.x < 0) {
