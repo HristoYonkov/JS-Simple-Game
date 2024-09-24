@@ -103,6 +103,10 @@ class Player {
     }
 
     update(deltaTime) {
+        this.movementCounterFrame += deltaTime;
+        this.shootCounterFrame += deltaTime;
+        this.tracksCounterFrame += deltaTime;
+        
         // player shooting
         if (this.game.shoot == 'f') {
             if (this.shootCounterFrame > this.shootIntervalFrame) {
@@ -110,13 +114,11 @@ class Player {
                 this.shootCounterFrame = 0;
             }
         }
-        this.shootCounterFrame += deltaTime;
 
         // update tracks
         if (this.game.lastKey.length > 0) {
-            this.updateTracks(deltaTime);
+            this.updateTracks();
         }
-        this.tracksCounterFrame += deltaTime;
         
         // player movement
         this.moveDirection = this.game.lastKey.length > 0 ? this.game.lastKey[this.game.lastKey.length - 1] : '';
@@ -136,12 +138,10 @@ class Player {
             this.setSpeed(0, 0);
         }
         if (this.movementCounterFrame > this.movementIntervalFrame) {
-            this.movementCounterFrame = 0;
             this.x += this.speedX;
             this.y += this.speedY;
+            this.movementCounterFrame = 0;
         }
-        this.movementCounterFrame += deltaTime;
-
 
         // player boundaries
         if (this.x < 0) {
