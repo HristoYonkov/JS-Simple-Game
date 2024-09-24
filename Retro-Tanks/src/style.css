@@ -22,7 +22,7 @@ canvas {
     left: 50%;
     transform: translate(-50%, -50%);
     /* following properties bottom are for to see the canvas range */
-    border: 2px solid red;
+    /* border: 2px solid red; */
     z-index: 1;
 }
 
