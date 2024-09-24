@@ -158,6 +158,11 @@ class LightShell {
         this.y = this.player.y + this.player.height / 2;
         this.speed = 10;
         this.rotateAngle = this.game.player.rotateTankAngle - Math.PI / 2;
+
+        // Control travel FPS
+        this.travelFps = 61;
+        this.travelIntervalFrame = 1000 / this.travelFps;
+        this.travelCounterFrame = 0;
     }
     draw(context) {
         context.save();
@@ -166,9 +171,13 @@ class LightShell {
         context.drawImage(this.image, -40, -80, 80, 80);
         context.restore();
     }
-    update() {
-        this.x += this.speed * Math.cos(this.rotateAngle);
-        this.y += this.speed * Math.sin(this.rotateAngle);
+    update(deltaTime) {
+        if (this.travelCounterFrame > this.travelIntervalFrame) {
+            this.x += this.speed * Math.cos(this.rotateAngle);
+            this.y += this.speed * Math.sin(this.rotateAngle);
+            this.travelCounterFrame = 0;
+        }
+        this.travelCounterFrame += deltaTime;
     }
 }
 
@@ -238,7 +247,7 @@ class Game {
             }
         });
         this.lightShells.forEach(shell => shell.draw(context));
-        this.lightShells.forEach(shell => shell.update());
+        this.lightShells.forEach(shell => shell.update(deltaTime));
 
         this.layerObjects = [this.player, ...this.objects];
         this.layerObjects.sort((a, b) => {
