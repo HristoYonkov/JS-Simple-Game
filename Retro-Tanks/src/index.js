@@ -45,7 +45,7 @@ window.addEventListener('load', function () {
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 3;
-            this.direction = 'ArrowUp';
+            this.direction = 'up';
             this.moveDirection = '';
             this.trackA = document.getElementById('track-1-A');
             this.trackB = document.getElementById('track-1-B');
@@ -131,19 +131,19 @@ window.addEventListener('load', function () {
             // player movement
             this.moveDirection = this.game.lastKey.length > 0 ? this.game.lastKey[this.game.lastKey.length - 1] : '';
             if (this.moveDirection == 'ArrowLeft') {
-                this.direction = 'ArrowLeft';
+                this.direction = 'left';
                 this.rotateTankAngle = 3 * Math.PI / 2;
                 this.setSpeed(- this.maxSpeed, 0);
             } else if (this.moveDirection == 'ArrowRight') {
-                this.direction = 'ArrowRight';
+                this.direction = 'right';
                 this.rotateTankAngle = Math.PI / 2;
                 this.setSpeed(this.maxSpeed, 0);
             } else if (this.moveDirection == 'ArrowUp') {
-                this.direction = 'ArrowUp';
+                this.direction = 'up';
                 this.rotateTankAngle = 0;
                 this.setSpeed(0, - this.maxSpeed);
             } else if (this.moveDirection == 'ArrowDown') {
-                this.direction = 'ArrowDown';
+                this.direction = 'down';
                 this.rotateTankAngle = Math.PI;
                 this.setSpeed(0, this.maxSpeed);
             } else {
@@ -186,16 +186,14 @@ window.addEventListener('load', function () {
             this.travelCounterFrame = 0;
         }
         draw(context) {
+            let translateX = this.x;
+            let translateY = this.y;
             context.save();
-            if (this.moveDirection == 'ArrowLeft') {
-                context.translate(this.x + 18, this.y);
-            } else if (this.moveDirection  == 'ArrowRight') {
-                context.translate(this.x - 18, this.y);
-            } else if (this.moveDirection  == 'ArrowUp') {
-                context.translate(this.x, this.y + 18);
-            } else if (this.moveDirection  == 'ArrowDown') {
-                context.translate(this.x, this.y - 18);
-            }
+            if (this.moveDirection == 'left')  translateX += 18;
+            if (this.moveDirection == 'right') translateX -= 18;
+            if (this.moveDirection == 'up') translateY += 18;
+            if (this.moveDirection == 'down') translateY -= 18;
+            context.translate(translateX, translateY);
             context.rotate(this.rotateAngle + Math.PI / 2);
             context.drawImage(this.image, - 40, - 100, 80, 80);
             context.restore();
@@ -277,7 +275,7 @@ window.addEventListener('load', function () {
             });
             this.lightShells.forEach(shell => shell.draw(context));
             this.lightShells.forEach(shell => shell.update(deltaTime));
-            
+
             this.layerObjects = [this.player, ...this.objects];
             this.layerObjects.sort((a, b) => {
                 return (a.y + a.height) - (b.y + b.height);
