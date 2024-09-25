@@ -286,10 +286,6 @@ window.addEventListener('load', function () {
                 object.draw(context);
                 object.update(deltaTime);
             });
-            
-            // this.player.draw(context);
-            // this.player.update();
-            // this.objects.forEach(obj => obj.draw(context));
         }
         initObjects() {
             for (let i = 0; i < this.numberOfObjects; i++) {
