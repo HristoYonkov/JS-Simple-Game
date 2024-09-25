@@ -197,7 +197,7 @@ window.addEventListener('load', function () {
                 context.translate(this.x, this.y - 18);
             }
             context.rotate(this.rotateAngle + Math.PI / 2);
-            context.drawImage(this.image, - 40, - 95, 80, 80);
+            context.drawImage(this.image, - 40, - 100, 80, 80);
             context.restore();
         }
         update(deltaTime) {
