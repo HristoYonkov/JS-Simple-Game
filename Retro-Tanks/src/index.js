@@ -189,7 +189,7 @@ window.addEventListener('load', function () {
             let translateX = this.x;
             let translateY = this.y;
             context.save();
-            if (this.moveDirection == 'left')  translateX += 18;
+            if (this.moveDirection == 'left') translateX += 18;
             if (this.moveDirection == 'right') translateX -= 18;
             if (this.moveDirection == 'up') translateY += 18;
             if (this.moveDirection == 'down') translateY -= 18;
