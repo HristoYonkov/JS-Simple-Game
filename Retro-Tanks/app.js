@@ -9,5 +9,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Retro-Tanks is listening on port ${port}..`);
+    console.log(`Game is listening on port ${port}..`);
 })
