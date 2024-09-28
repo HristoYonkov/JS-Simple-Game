@@ -3,37 +3,7 @@ window.addEventListener('load', function () {
     const ctx = canvas.getContext('2d');
     canvas.width = 750;
     canvas.height = 500;
-
-    class InputHandler {
-        constructor(game) {
-            this.game = game;
-            window.addEventListener('keydown', (e) => {
-                if (e.key == 'ArrowLeft' || e.key == 'ArrowRight' || e.key == 'ArrowUp' || e.key == 'ArrowDown') {
-                    if (this.game.lastKey.length < 4 && !this.game.lastKey.includes(e.key)) {
-                        this.game.lastKey.push(e.key);
-                    }
-                }
-                if (e.key == 'f') this.game.shoot = 'f';
-            });
-
-            window.addEventListener('keyup', (e) => {
-                if (e.key == 'ArrowLeft') {
-                    const index = this.game.lastKey.indexOf('ArrowLeft');
-                    this.game.lastKey.splice(index, 1);
-                } else if (e.key == 'ArrowRight') {
-                    const index = this.game.lastKey.indexOf('ArrowRight');
-                    this.game.lastKey.splice(index, 1);
-                } else if (e.key == 'ArrowUp') {
-                    const index = this.game.lastKey.indexOf('ArrowUp');
-                    this.game.lastKey.splice(index, 1);
-                } else if (e.key == 'ArrowDown') {
-                    const index = this.game.lastKey.indexOf('ArrowDown');
-                    this.game.lastKey.splice(index, 1);
-                }
-                if (e.key == 'f') this.game.shoot = undefined;
-            });
-        }
-    }
+    
 
     class Player {
         constructor(game) {
@@ -169,90 +139,6 @@ window.addEventListener('load', function () {
         }
     }
 
-    class LightShell {
-        constructor(game) {
-            this.game = game;
-            this.image = document.getElementById('Light-Shell');
-            this.player = this.game.player;
-            this.x = this.player.x + this.player.width / 2;
-            this.y = this.player.y + this.player.height / 2;
-            this.moveDirection = this.player.direction;
-            this.speed = 10;
-            this.rotateAngle = this.game.player.rotateTankAngle + this.game.player.rotateWeaponAngle - Math.PI / 2;
-
-            // Control travel FPS
-            this.travelFps = 61;
-            this.travelIntervalFrame = 1000 / this.travelFps;
-            this.travelCounterFrame = 0;
-        }
-        draw(context) {
-            let translateX = this.x;
-            let translateY = this.y;
-            context.save();
-            if (this.moveDirection == 'left') translateX += 18;
-            if (this.moveDirection == 'right') translateX -= 18;
-            if (this.moveDirection == 'up') translateY += 18;
-            if (this.moveDirection == 'down') translateY -= 18;
-            context.translate(translateX, translateY);
-            context.rotate(this.rotateAngle + Math.PI / 2);
-            context.drawImage(this.image, - 40, - 100, 80, 80);
-            context.restore();
-        }
-        update(deltaTime) {
-            if (this.travelCounterFrame > this.travelIntervalFrame) {
-                this.x += this.speed * Math.cos(this.rotateAngle);
-                this.y += this.speed * Math.sin(this.rotateAngle);
-                this.travelCounterFrame = 0;
-            }
-            this.travelCounterFrame += deltaTime;
-        }
-    }
-
-    class Object {
-        constructor(game) {
-            this.game = game;
-        }
-        draw(context) {
-            context.drawImage(this.image, this.x, this.y, this.width, this.height);
-        }
-        update() {
-
-        }
-    }
-
-    class Skull extends Object {
-        constructor(game) {
-            super(game);
-            this.game = game;
-            this.image = document.getElementById('skull');
-            this.width = 100;
-            this.height = 100;
-            this.x = Math.random() * (this.game.width - this.width);
-            this.y = Math.random() * (this.game.height - this.height);
-        }
-    }
-    class Tree extends Object {
-        constructor(game) {
-            super(game);
-            this.game = game;
-            this.image = document.getElementById('tree');
-            this.width = 100;
-            this.height = 100;
-            this.x = Math.random() * (this.game.width - this.width);
-            this.y = Math.random() * (this.game.height - this.height);
-        }
-    }
-    class Cactus extends Object {
-        constructor(game) {
-            super(game);
-            this.game = game;
-            this.image = document.getElementById('cactus');
-            this.width = 100;
-            this.height = 100;
-            this.x = Math.random() * (this.game.width - this.width);
-            this.y = Math.random() * (this.game.height - this.height);
-        }
-    }
 
     class Game {
         constructor(width, height) {
@@ -260,7 +146,7 @@ window.addEventListener('load', function () {
             this.height = height;
             this.lastKey = [];
             this.shoot = undefined;
-            this.input = new InputHandler(this);
+            // this.input = new InputHandler(this);
             this.player = new Player(this);
             this.numberOfObjects = 6;
             this.objects = [];
@@ -268,14 +154,6 @@ window.addEventListener('load', function () {
             this.layerObjects = [];
         }
         render(context, deltaTime) {
-            this.lightShells.forEach(shell => {
-                if (shell.x > this.width || shell.y > this.height) {
-                    this.lightShells.shift();
-                }
-            });
-            this.lightShells.forEach(shell => shell.draw(context));
-            this.lightShells.forEach(shell => shell.update(deltaTime));
-
             this.layerObjects = [this.player, ...this.objects];
             this.layerObjects.sort((a, b) => {
                 return (a.y + a.height) - (b.y + b.height);
@@ -285,17 +163,9 @@ window.addEventListener('load', function () {
                 object.update(deltaTime);
             });
         }
-        initObjects() {
-            for (let i = 0; i < this.numberOfObjects; i++) {
-                if (i < this.numberOfObjects / 3) this.objects.push(new Skull(this))
-                else if (i < this.numberOfObjects / 3 + this.numberOfObjects / 3) this.objects.push(new Cactus(this))
-                else this.objects.push(new Tree(this))
-            }
-        }
     }
 
     const game = new Game(canvas.width, canvas.height);
-    game.initObjects();
 
     let lastTime = 0;
 
@@ -310,5 +180,3 @@ window.addEventListener('load', function () {
     }
     animate(0);
 });
-
-console.log('hello game');
