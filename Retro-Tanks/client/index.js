@@ -3,7 +3,9 @@ window.addEventListener('load', function () {
     const ctx = canvas.getContext('2d');
     canvas.width = 750;
     canvas.height = 500;
-    
+
+    const socket = io();
+
 
     class Player {
         constructor(game) {
