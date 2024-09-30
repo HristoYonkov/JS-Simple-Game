@@ -8,12 +8,12 @@ window.addEventListener('load', function () {
 
 
     class Player {
-        constructor(game) {
+        constructor(game, x, y) {
             this.game = game;
             this.width = 100;
             this.height = 100;
-            this.x = 200;
-            this.y = 200;
+            this.x = x;
+            this.y = y;
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 3;
@@ -141,42 +141,48 @@ window.addEventListener('load', function () {
         }
     }
 
-
     class Game {
-        constructor(width, height) {
+        constructor(width, height, players) {
             this.width = width;
             this.height = height;
             this.lastKey = [];
             this.shoot = undefined;
             // this.input = new InputHandler(this);
-            this.player = new Player(this);
             this.numberOfObjects = 6;
             this.objects = [];
             this.lightShells = [];
             this.layerObjects = [];
         }
-        render(context, deltaTime) {
-            this.layerObjects = [this.player, ...this.objects];
-            this.layerObjects.sort((a, b) => {
-                return (a.y + a.height) - (b.y + b.height);
-            });
-            this.layerObjects.forEach(object => {
-                object.draw(context);
-                object.update(deltaTime);
-            });
+        render(context, deltaTime, players) {
+            for (const id in players) {
+                const player = players[id];
+                player.draw(context);
+            }
         }
     }
+
+    const players = {};
+
+    socket.on('updatePlayers', (bePlayers) => {
+        for (const id in bePlayers) {
+            const bePlayer = bePlayers[id];
+
+            if (!players[id]) {
+                players[id] = new Player(game, bePlayer.x, bePlayer.y);
+            }
+        }
+        console.log(players);
+    })
 
     const game = new Game(canvas.width, canvas.height);
 
     let lastTime = 0;
-
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.render(ctx, deltaTime);
+        game.render(ctx, deltaTime, players);
 
         requestAnimationFrame(animate);
     }
