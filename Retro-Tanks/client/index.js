@@ -128,6 +128,7 @@ window.addEventListener('load', function () {
             }
 
             // player boundaries
+            // For optimization may be update with ternary operator..
             if (this.x < 0) {
                 this.x = 0;
             } else if (this.x > this.game.width - this.width) {
@@ -157,6 +158,7 @@ window.addEventListener('load', function () {
             for (const id in players) {
                 const player = players[id];
                 player.draw(context);
+                player.update(deltaTime);
             }
         }
     }
