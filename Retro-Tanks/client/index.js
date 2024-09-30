@@ -173,6 +173,12 @@ window.addEventListener('load', function () {
                 players[id] = new Player(game, bePlayer.x, bePlayer.y);
             }
         }
+
+        for (const id in players) {
+            if (!bePlayers[id]) {
+                delete players[id];
+            }
+        }
         console.log(players);
     })
 
