@@ -5,15 +5,16 @@ window.addEventListener('load', function () {
     canvas.height = 500;
 
     const socket = io();
-
+    let localPlayerID;
 
     class Player {
-        constructor(game, x, y) {
+        constructor({ game, x, y, isLocalPlayer = false }) {
             this.game = game;
             this.width = 100;
             this.height = 100;
             this.x = x;
             this.y = y;
+            this.isLocalPlayer = isLocalPlayer;
             this.speedX = 0;
             this.speedY = 0;
             this.maxSpeed = 3;
@@ -21,8 +22,8 @@ window.addEventListener('load', function () {
             this.moveDirection = '';
             this.trackA = document.getElementById('track-1-A');
             this.trackB = document.getElementById('track-1-B');
-            this.hullImage = document.getElementById('hull');
-            this.weaponImage = document.getElementById('weapon');
+            this.hullImage = document.getElementById(this.isLocalPlayer? 'blue-hull': 'red-hull');
+            this.weaponImage = document.getElementById(this.isLocalPlayer? 'blue-weapon': 'red-weapon');
             this.rotateTankAngle = 0;
             this.rotateWeaponAngle = 0;
             this.currentTracks = this.trackA;
@@ -163,23 +164,25 @@ window.addEventListener('load', function () {
         }
     }
 
-    const players = {};
+    const clientPlayers = {};
 
-    socket.on('updatePlayers', (bePlayers) => {
-        for (const id in bePlayers) {
-            const bePlayer = bePlayers[id];
+    socket.on('updatePlayers', (serverPlayers) => {
+        localPlayerID = socket.id;
+        
+        for (const id in serverPlayers) {
+            const serverPlayer = serverPlayers[id];
 
-            if (!players[id]) {
-                players[id] = new Player(game, bePlayer.x, bePlayer.y);
+            if (!clientPlayers[id]) {
+                clientPlayers[id] = new Player({ game, x: serverPlayer.x, y: serverPlayer.y, isLocalPlayer: id === localPlayerID });
             }
         }
 
-        for (const id in players) {
-            if (!bePlayers[id]) {
-                delete players[id];
+        for (const id in clientPlayers) {
+            if (!serverPlayers[id]) {
+                delete clientPlayers[id];
             }
         }
-        console.log(players);
+        console.log(clientPlayers);
     })
 
     const game = new Game(canvas.width, canvas.height);
@@ -190,7 +193,7 @@ window.addEventListener('load', function () {
         lastTime = timeStamp;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.render(ctx, deltaTime, players);
+        game.render(ctx, deltaTime, clientPlayers);
 
         requestAnimationFrame(animate);
     }
