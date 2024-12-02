@@ -15,17 +15,17 @@ app.get('/', (req, res) => {
     res.sendFile(_dirname + '/index.html');
 });
 
-const players = {};
+const serverPlayers = {};
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    players[socket.id] = { x: 750 * Math.random(), y: 500 * Math.random() };
-    io.emit('updatePlayers', players);
+    serverPlayers[socket.id] = { x: 750 * Math.random(), y: 500 * Math.random() };
+    io.emit('updatePlayers', serverPlayers);
 
     socket.on('disconnect', (reason) => {
         console.log(reason);
-        delete players[socket.id];
-        io.emit('updatePlayers', players);
+        delete serverPlayers[socket.id];
+        io.emit('updatePlayers', serverPlayers);
     })
 })
 
