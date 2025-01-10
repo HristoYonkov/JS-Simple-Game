@@ -203,17 +203,18 @@ window.addEventListener('load', function () {
     if (!clientPlayers[socket.id]) return;
 
     switch (e.key) {
+      case 'ArrowLeft':
+        clientPlayers[socket.id].x -= 5
+        clientPlayers[socket.id].rotateTankAngle = 3 * Math.PI / 2;
+        break;
+      case 'ArrowRight':
+        clientPlayers[socket.id].x += 5
+        break;
       case 'ArrowUp':
         clientPlayers[socket.id].y -= 5
         break;
       case 'ArrowDown':
         clientPlayers[socket.id].y += 5
-        break;
-      case 'ArrowLeft':
-        clientPlayers[socket.id].x -= 5
-        break;
-      case 'ArrowRight':
-        clientPlayers[socket.id].x += 5
         break;
     }
   });
