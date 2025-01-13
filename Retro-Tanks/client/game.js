@@ -49,8 +49,8 @@ window.addEventListener('load', function () {
             this.moveDirection = '';
             this.trackA = document.getElementById('track-1-A');
             this.trackB = document.getElementById('track-1-B');
-            this.hullImage = document.getElementById('hull');
-            this.weaponImage = document.getElementById('weapon');
+            this.hullImage = document.getElementById('blue-hull');
+            this.weaponImage = document.getElementById('blue-weapon');
             this.rotateTankAngle = 0;
             this.rotateWeaponAngle = 0;
             this.currentTracks = this.trackA;
